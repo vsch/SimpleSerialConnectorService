@@ -1,8 +1,8 @@
 # Simple Serial Port Connector
 
-A plugin for JetBrains IDEs exposing [jscc - Java Simple Serial Connector] serial library as a service to allow multiple
-plugins to share the library and provide serial port connectivity without conflicting with each
-other.
+A plugin for JetBrains IDEs exposing [jscc - Java Simple Serial Connector] serial library as a
+service to allow multiple plugins to share the library and provide serial port connectivity
+without conflicting with each other.
 
 To make the service compatible with the JetBrains maintained `Serial Monitor` plugin, the
 service and associated interfaces were copied into this plugin.
@@ -21,33 +21,44 @@ dependent plugin. This means that for now, using this library may still conflict
 Port Monitor` loading of native libraries. That said, it is still preferable to implement serial
 port connectivity by using this plugin as a dependency, to avoid conflicting with other plugins.
 
-## Add SimpleSerialConnection to your plugin
+## Adding SimpleSerialConnectorService to your plugin
 
-* Download the plugin zip file from JetBrains Marketplace
-* Expand the zip file and copy the `instrumented-SimpleSerialConnectorService-1.0.0.jar` to a
-  directory in your plugin for external libraries, for the sake of discussing call it `libs/`
-* Modify the gradle build script to add this `jar` as a `compileOnly` dependency:
-    
+* Modify the gradle build script to add the github repository for the plugin package, and define
+  your github user and a personal access token (see [Creating A Personal Access Token]) in the
+  environment variables: `GITHUB_ACTOR`, `GITHUB_TOKEN`.
+
   ```groovy
-  dependencies {
-    compileOnly(files("libs/SimpleSerialConnectorService-1.0.0.jar"))
+  repositories {
+    maven {
+        name = "GitHubPackages"
+        url = "https://maven.pkg.github.com/vsch/SimpleSerialConnectorService"
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
   }
   ```
+* Modify the gradle build script to add this `jar` as a `compileOnly` dependency:
 
+  ```groovy
+  dependencies {
+    compileOnly("com.vladsch.plugins:simple-serial-connector-service:1.0.0")
+  }
+  ```
 * Add the plugin to `plugin.xml` as a dependency:
 
   ```xml
-    <depends>com.vladsch.plugins.SimpleSerialPortService</depends>
+  <depends>com.vladsch.plugins.SimpleSerialConnectorService</depends>
   ```
-
-
 
 ## Notes
 
-The plugin uses [jscc - Java Simple Serial Connector], Licensed under [GNU Lesser GPL]
+The plugin uses [jscc - Java Simple Serial Connector], Licensed under [GNU Lesser GPL 3]
 
-[GNU Lesser GPL]: http://www.gnu.org/licenses/lgpl.html
+[Creating A Personal Access Token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+[jscc - Java Simple Serial Connector]: https://github.com/java-native/jssc
+[GNU Lesser GPL 3]: http://www.gnu.org/licenses/lgpl.html
 [Issues]: https://github.com/vsch/SimpleSerialConnectorService/issues
 [Plugin Source]: https://github.com/vsch/SimpleSerialConnectorService
-[jscc - Java Simple Serial Connector]: https://github.com/java-native/jssc
 
