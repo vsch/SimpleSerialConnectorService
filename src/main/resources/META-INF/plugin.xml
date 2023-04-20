@@ -1,11 +1,11 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin url="http://github.com/vsch/SimpleSerialConnectorService" require-restart="true">
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>com.vladsch.plugins.SimpleSerialPortService</id>
+    <id>com.vladsch.plugins.SimpleSerialConnectorService</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>SimpleSerialPortService</name>
+    <name>SimpleSerialConnectorService</name>
 
     <vendor email="vladimir.schneider@gmail.com" url="https://github.com/vsch">Vladimir Schneider</vendor>
 

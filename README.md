@@ -43,7 +43,7 @@ port connectivity by using this plugin as a dependency, to avoid conflicting wit
 
   ```groovy
   dependencies {
-    compileOnly("com.vladsch.plugins:simple-serial-connector-service:1.0.0")
+    compileOnly("com.vladsch.plugins:simple-serial-connector-service:1.0.2")
   }
   ```
 * Add the plugin to `plugin.xml` as a dependency:
