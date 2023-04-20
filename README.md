@@ -4,13 +4,13 @@ A plugin for JetBrains IDEs exposing [jscc - Java Simple Serial Connector] seria
 service to allow multiple plugins to share the library and provide serial port connectivity
 without conflicting with each other.
 
-To make the service compatible with the JetBrains maintained `Serial Monitor` plugin, the
+To make the service compatible with the JetBrains maintained `Serial Port Monitor` plugin, the
 service and associated interfaces were copied into this plugin.
 
 The idea was that if `Serial Port Monitor` plugin is installed then this plugin's
-`JsscSerialService` will delegate all calls to the `Serial Monitor`'s `JsscSerialService`. If
-the `Serial Port Monitor` plugin is not installed, then this plugin will provide the service via
-its own implementation using the [jscc - Java Simple Serial Connector] library.
+`JsscSerialService` will delegate all calls to the `Serial Port Monitor`'s `JsscSerialService`.
+If the `Serial Port Monitor` plugin is not installed, then this plugin will provide the service
+via its own implementation using the [jscc - Java Simple Serial Connector] library.
 
 Effectively, any plugin can implement serial monitoring by including this plugin as a dependency
 and seamlessly provide serial port communication with or without `Serial Port Monitor` being

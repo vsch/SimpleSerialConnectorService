@@ -25,7 +25,7 @@
             all calls to its <code>JsscSerialService</code>. If the <code>Serial Port Monitor</code> plugin is not installed, then this
             plugin provides the service via the <a href="https://github.com/java-native/jssc">jscc - Java Simple Serial Connector</a> library.</p>
         <p>Effectively, any plugin can implement serial monitoring by including this plugin as a dependency
-            and seamlessly provide serial port communication with or without <code>Serial Monitor</code> being
+            and seamlessly provide serial port communication with or without <code>Serial Port Monitor</code> being
             installed or compatible with an earlier version of the IDE.</p>
         <p>Currently, it is not possible to use <code>Serial Port Monitor</code>&rsquo;s classes in a dependent plugin.
             Using this library may still conflict with <code>Serial Port Monitor</code> loading of native libraries.</p>
