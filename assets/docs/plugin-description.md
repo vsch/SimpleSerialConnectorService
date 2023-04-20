@@ -2,10 +2,10 @@ Exposes [jscc] serial library as a service to allow multiple plugins to share th
 provide serial port connectivity without conflicting with each other.
 
 To make the service compatible with now JetBrains maintained `Serial Monitor` plugin, the
-service and associated interfaces were copied into this plugin. If `Serial Monitor` plugin is
-installed then this plugin's `SerialPortManager` will delegate all calls to the `Serial Monitor`
-plugin's `JsscSerialService`. If the `Serial Monitor` plugin is not installed, then this plugin
-will provide the service via the [jscc] library in this plugin.
+service and associated interfaces were copied into this plugin. The goal was to use `Serial
+Monitor` plugin, if it is installed, by delegating all calls to its `JsscSerialService`. If the
+`Serial Monitor` plugin is not installed, then this plugin provides the service via the [jscc]
+library.
 
 Effectively, any plugin can implement serial monitoring by including this plugin as a dependency
 and seamlessly provide serial port communication with or without `Serial Monitor` being
@@ -20,7 +20,7 @@ user functionality of its own.
 
 | [Issues][] | [Plugin Source][] |
 
-[Issues]: https://github.com/vsch/SimpleSerialPortService/issues
-[Plugin Source]: https://github.com/vsch/SimpleSerialPortService
+[Issues]: https://github.com/vsch/SimpleSerialConnectorService/issues
+[Plugin Source]: https://github.com/vsch/SimpleSerialConnectorService
 [jscc]: https://github.com/java-native/jssc
 

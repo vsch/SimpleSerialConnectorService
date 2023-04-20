@@ -1,1 +1,1 @@
-rootProject.name = "SimpleSerialPortService"
+rootProject.name = "SimpleSerialConnectorService"
