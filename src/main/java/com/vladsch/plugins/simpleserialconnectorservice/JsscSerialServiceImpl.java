@@ -1,4 +1,4 @@
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
 import com.google.common.base.Suppliers;
 import com.intellij.openapi.application.ApplicationManager;
@@ -47,7 +47,8 @@ public class JsscSerialServiceImpl implements JsscSerialService {
                 );
     }
 
-    static boolean haveSerialMonitor = true;
+    // KLUDGE: set to true when and if SerialPortMonitor service can be used.
+    static boolean haveSerialMonitor = false;
 
     static @NotNull JsscSerialService getInstance() {
         // try to get the serial monitor JsscSerialService
@@ -91,8 +92,8 @@ public class JsscSerialServiceImpl implements JsscSerialService {
     }
 
     @Override
-    public boolean isConnected(String name) {
-        SerialConnection connection = openPorts.get(name);
+    public boolean isConnected(String portName) {
+        SerialConnection connection = openPorts.get(portName);
         return connection != null && connection.mySerialPort.isOpened();
     }
 

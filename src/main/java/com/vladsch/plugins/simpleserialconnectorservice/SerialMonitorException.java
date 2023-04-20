@@ -19,32 +19,20 @@
  * under the License.
  */
 
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
-import com.intellij.openapi.Disposable;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nls;
 
-import java.util.List;
-import java.util.function.Consumer;
+/**
+ * @author Dmitry_Cherkas
+ */
+public class SerialMonitorException extends Exception {
 
-public interface JsscSerialService extends Disposable {
-    static @NotNull JsscSerialService getInstance() {
-        return JsscSerialServiceImpl.getInstance();
+    public SerialMonitorException(@Nls String message) {
+        super(message);
     }
 
-    @NotNull
-    List<String> getPortNames(boolean filtered);
-
-    boolean isPortValid(String portName, boolean filtered);
-
-    boolean isConnected(String name);
-
-    void connect(SerialPortProfile settings, Consumer<byte[]> dataListener, SerialConnectionListener connectListener) throws SerialMonitorException;
-
-    void close(String portName) throws SerialMonitorException;
-
-    void write(@NotNull String portName, byte[] bytes) throws SerialMonitorException;
-
-    @Override
-    void dispose();
+    public SerialMonitorException(@Nls String message, Throwable cause) {
+        super(message, cause);
+    }
 }

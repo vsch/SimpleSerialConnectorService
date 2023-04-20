@@ -1,15 +1,21 @@
-<p>Exposes <a href="https://github.com/java-native/jssc">jscc</a> serial library as a service to allow multiple plugins to share the library and
-provide serial port connectivity without conflicting with each other.</p>
-<p>To make the service compatible with now JetBrains maintained <code>Serial Monitor</code> plugin, the
-service and associated interfaces were copied into this plugin. The goal was to use <code>Serial Monitor</code> plugin, if it is installed, by delegating all calls to its <code>JsscSerialService</code>. If the
-<code>Serial Monitor</code> plugin is not installed, then this plugin provides the service via the <a href="https://github.com/java-native/jssc">jscc</a>
-library.</p>
+<p>This plugin is intended to be installed as a dependency of other plugins since it exposes no
+user functionality of its own. See <a href="https://github.com/vsch/SimpleSerialConnectorService/blob/master/README.md">README</a> file for configuring your plugin build to use this
+plugin&rsquo;s <code>JsscSerialService</code>.</p>
+<hr>
+<p>Exposes <a href="https://github.com/java-native/jssc">jscc - Java Simple Serial Connector</a> serial library as a service to allow multiple
+plugins to share the library and provide serial port connectivity without conflicting with each
+other.</p>
+<p>The service provided by this plugin is a clone of one in the JetBrains <code>Serial Port Monitor</code>
+plugin. The intention is to use the <code>Serial Port Monitor</code> plugin, if it is installed, by delegating
+all calls to its <code>JsscSerialService</code>. If the <code>Serial Port Monitor</code> plugin is not installed, then this
+plugin provides the service via the <a href="https://github.com/java-native/jssc">jscc - Java Simple Serial Connector</a> library.</p>
 <p>Effectively, any plugin can implement serial monitoring by including this plugin as a dependency
 and seamlessly provide serial port communication with or without <code>Serial Monitor</code> being
 installed or compatible with an earlier version of the IDE.</p>
+<p>Currently, it is not possible to use <code>Serial Port Monitor</code>&rsquo;s classes in a dependent plugin.
+Using this library may still conflict with <code>Serial Port Monitor</code> loading of native libraries.</p>
+<p>Implement serial port connectivity by using this plugin as a dependency, to avoid conflicting
+with other plugins is still preferable.</p>
 <hr>  
-<p>This plugin is intended to be installed as a dependency of other plugins since it exposes no
-user functionality of its own.</p>
-<hr>
 <p>| <a href="https://github.com/vsch/SimpleSerialConnectorService/issues">Issues</a> | <a href="https://github.com/vsch/SimpleSerialConnectorService">Plugin Source</a> |</p>
 

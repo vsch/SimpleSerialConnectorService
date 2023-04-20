@@ -1,5 +1,5 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
-<idea-plugin url="http://github.com/vsch/SimpleSerialPortService" require-restart="true">
+<idea-plugin url="http://github.com/vsch/SimpleSerialConnectorService" require-restart="true">
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>com.vladsch.plugins.SimpleSerialPortService</id>
 
@@ -13,32 +13,36 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-        <p>Exposes <a href="https://github.com/java-native/jssc">jscc</a> serial library as a service to allow multiple plugins to share the library and
-            provide serial port connectivity without conflicting with each other.</p>
-        <p>To make the service compatible with now JetBrains maintained <code>Serial Monitor</code> plugin, the
-            service and associated interfaces were copied into this plugin. If <code>Serial Monitor</code> plugin is
-            installed then this plugin&rsquo;s <code>SerialPortManager</code> will delegate all calls to the <code>Serial Monitor</code>
-            plugin&rsquo;s <code>JsscSerialService</code>. If the <code>Serial Monitor</code> plugin is not installed, then this plugin
-            will provide the service via the <a href="https://github.com/java-native/jssc">jscc</a> library in this plugin.</p>
+        <p>This plugin is intended to be installed as a dependency of other plugins since it exposes no
+            user functionality of its own. See <a href="https://github.com/vsch/SimpleSerialConnectorService/blob/master/README.md">README</a> file for configuring your plugin build to use this
+            plugin&rsquo;s <code>JsscSerialService</code>.</p>
+        <hr>
+        <p>Exposes <a href="https://github.com/java-native/jssc">jscc - Java Simple Serial Connector</a> serial library as a service to allow multiple
+            plugins to share the library and provide serial port connectivity without conflicting with each
+            other.</p>
+        <p>The service provided by this plugin is a clone of one in the JetBrains <code>Serial Port Monitor</code>
+            plugin. The intention is to use the <code>Serial Port Monitor</code> plugin, if it is installed, by delegating
+            all calls to its <code>JsscSerialService</code>. If the <code>Serial Port Monitor</code> plugin is not installed, then this
+            plugin provides the service via the <a href="https://github.com/java-native/jssc">jscc - Java Simple Serial Connector</a> library.</p>
         <p>Effectively, any plugin can implement serial monitoring by including this plugin as a dependency
             and seamlessly provide serial port communication with or without <code>Serial Monitor</code> being
             installed or compatible with an earlier version of the IDE.</p>
+        <p>Currently, it is not possible to use <code>Serial Port Monitor</code>&rsquo;s classes in a dependent plugin.
+            Using this library may still conflict with <code>Serial Port Monitor</code> loading of native libraries.</p>
+        <p>Implement serial port connectivity by using this plugin as a dependency, to avoid conflicting
+            with other plugins is still preferable.</p>
         <hr>
-        <p>This plugin is intended to be installed as a dependency of other plugins since it exposes no
-            user functionality of its own.</p>
-        <hr>
-        <p>| <a href="https://github.com/vsch/SimpleSerialPortService/issues">Issues</a> | <a href="https://github.com/vsch/SimpleSerialPortService">Plugin Source</a> |</p>
+        <p>| <a href="https://github.com/vsch/SimpleSerialConnectorService/issues">Issues</a> | <a href="https://github.com/vsch/SimpleSerialConnectorService">Plugin Source</a> |</p>
         ]]></description>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <!--<depends>SerialPortMonitor</depends>-->
-    <depends optional="true" config-file="plugin-serial-monitor.xml">SerialPortMonitor</depends>
+    <!-- <depends optional="true" config-file="plugin-serial-monitor.xml">SerialPortMonitor</depends>-->
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.vladsch.plugins.simpleserialportservice.JsscSerialServiceImpl" serviceInterface="com.vladsch.plugins.simpleserialportservice.JsscSerialService"/>
+        <applicationService serviceImplementation="com.vladsch.plugins.simpleserialconnectorservice.JsscSerialServiceImpl" serviceInterface="com.vladsch.plugins.simpleserialconnectorservice.JsscSerialService"/>
     </extensions>
 </idea-plugin>

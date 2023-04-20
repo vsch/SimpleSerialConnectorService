@@ -1,4 +1,4 @@
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
 import org.jetbrains.annotations.NotNull;
 

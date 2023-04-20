@@ -1,10 +1,9 @@
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.plugins.serialmonitor.SerialProfileService.NewLine;
 import com.intellij.plugins.serialmonitor.SerialProfileService.Parity;
 import com.intellij.plugins.serialmonitor.SerialProfileService.StopBits;
-import com.vladsch.plugins.simpleserialportservice.SerialConnectionListener.PortStatus;
+import com.vladsch.plugins.simpleserialconnectorservice.SerialConnectionListener.PortStatus;
 import jssc.SerialNativeInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,8 +61,8 @@ public class JsscSerialServiceDelegate implements JsscSerialService {
     }
 
     @Override
-    public boolean isConnected(String name) {
-        return myJsscSerialService.isConnected(name);
+    public boolean isConnected(String portName) {
+        return myJsscSerialService.isConnected(portName);
     }
 
     private static com.intellij.plugins.serialmonitor.SerialPortProfile from(SerialPortProfile settings) {

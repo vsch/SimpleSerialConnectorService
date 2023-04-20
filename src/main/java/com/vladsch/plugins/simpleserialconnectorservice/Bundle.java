@@ -1,5 +1,5 @@
 // Copyright (c) 2015-2023 Vladimir Schneider <vladimir.schneider@gmail.com> Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
 import com.intellij.AbstractBundle;
 import org.jetbrains.annotations.NonNls;
@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public class Bundle {
 
     @NonNls
-    private static final String BUNDLE_NAME = "com.vladsch.plugins.simpleserialportservice.localization.strings";
+    private static final String BUNDLE_NAME = "messages.strings";
 
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

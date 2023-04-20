@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package com.vladsch.plugins.simpleserialportservice;
+package com.vladsch.plugins.simpleserialconnectorservice;
 
 import java.nio.charset.StandardCharsets;
 
@@ -70,10 +70,40 @@ public class SerialPortProfile {
         }
     }
 
+    public enum BaudRate {
+        BAUDRATE_110(110),
+        BAUDRATE_300(300),
+        BAUDRATE_600(600),
+        BAUDRATE_1200(1200),
+        BAUDRATE_2400(2400),
+        BAUDRATE_4800(4800),
+        BAUDRATE_9600(9600),
+        BAUDRATE_14400(14400),
+        BAUDRATE_19200(19200),
+        BAUDRATE_38400(38400),
+        BAUDRATE_57600(57600),
+        BAUDRATE_115200(115200),
+        BAUDRATE_128000(128000),
+        BAUDRATE_230400(230400),
+        BAUDRATE_256000(256000),
+        BAUDRATE_460800(460800),
+        BAUDRATE_512000(512000);
+
+        final public int intValue;
+
+        BaudRate(int value) {
+            this.intValue = value;
+        }
+
+        public String toString() {
+            return Bundle.message(String.valueOf(intValue));
+        }
+    }
+
     public String portName = "";
     public int baudRate = 0;
     public int bits = 8;
-    
+
     public StopBits stopBits = StopBits.BITS_1;
     public Parity parity = Parity.NONE;
     public NewLine newLine = NewLine.CR;
