@@ -1,4 +1,4 @@
-# Simple Serial Port Connector
+# Simple Serial Connector Service
 
 A plugin for JetBrains IDEs exposing [jscc - Java Simple Serial Connector] serial library as a
 service to allow multiple plugins to share the library and provide serial port connectivity
