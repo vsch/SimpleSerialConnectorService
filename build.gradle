@@ -56,10 +56,23 @@ java {
 }
 
 publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "com.vladsch.plugins"
+            artifactId = "simple-serial-connector-service"
+            version = pluginVersion
+
+            from components.java
+        }
+    }
+    
     repositories {
+        mavenLocal {
+
+        }
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/vsch/simple-serial-connector-service"
+            url = "https://maven.pkg.github.com/vsch/SimpleSerialConnectorService"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -84,7 +97,7 @@ tasks {
     runIde {
         enabled = false
     }
-    
+
     patchPluginXml {
         version.set(pluginVersion)
         sinceBuild.set(pluginSinceBuild)
