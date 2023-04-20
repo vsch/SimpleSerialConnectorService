@@ -1,12 +1,12 @@
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.20"
-    id("org.jetbrains.intellij") version "1.13.3"
+    id "java"
+    id "org.jetbrains.kotlin.jvm" version "1.8.20"
+    id "org.jetbrains.intellij" version "1.13.3"
 }
 
-val pluginVersion = "1.0.0"
-val pluginSinceBuild = "203.5981.155"
-val pluginUntilBuild = ""
+def pluginVersion = "1.0.0"
+def pluginSinceBuild = "203.5981.155"
+def pluginUntilBuild = ""
 
 group = "com.vladsch.plugins"
 version = pluginVersion
@@ -19,33 +19,36 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2020.3")
-    type.set("CL") // Target IDE Platform
+    version = "2020.3"
+    type = "CL" // Target IDE Platform
+    downloadSources = true
 
-    plugins.set(listOf())
+    plugins = []
 }
 
 dependencies {
-    annotationProcessor("junit:junit:4.13.2")
-    testImplementation("junit:junit:4.13.2")
+    annotationProcessor "junit:junit:4.13.2"
+    testImplementation "junit:junit:4.13.2"
 
-    implementation("org.jetbrains:annotations:24.0.1")
+    implementation "org.jetbrains:annotations:24.0.1"
     implementation("io.github.java-native:jssc:2.9.4") {
-        exclude("org.slf4j", "slf4j-api")
+        exclude(group: "org.slf4j", module: "slf4j-api")
     }
+
     compileOnly(files("lib/serial-monitor.jar"))
 }
 
+// Set the JVM compatibility versions
+compileJava {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "11"
+}
+
 tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
-    }
-    
     instrumentCode {
         enabled = true
     }
@@ -57,7 +60,7 @@ tasks {
     buildSearchableOptions {
         enabled = false
     }
-    
+
     runIde {
         enabled = false
     }
