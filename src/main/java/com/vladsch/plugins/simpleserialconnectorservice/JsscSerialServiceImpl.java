@@ -41,30 +41,10 @@ public class JsscSerialServiceImpl implements JsscSerialService {
     private final ConcurrentMap<String, SerialConnection> openPorts = new ConcurrentHashMap<>();
 
     private static List<String> doGetPortNames() {
-        return
-                ProgressManager.getInstance().computeInNonCancelableSection(
-                        () -> Arrays.asList(SerialPortList.getPortNames())
-                );
+        return ProgressManager.getInstance().computeInNonCancelableSection(() -> Arrays.asList(SerialPortList.getPortNames()));
     }
 
-    // KLUDGE: set to true when and if SerialPortMonitor service can be used.
-    static boolean haveSerialMonitor = false;
-
     static @NotNull JsscSerialService getInstance() {
-        // try to get the serial monitor JsscSerialService
-        if (haveSerialMonitor) {
-            try {
-                JsscSerialService instance = JsscSerialServiceDelegate.getInstance();
-                if (instance != null) {
-                    return instance;
-                }
-            } catch (NoClassDefFoundError | IllegalAccessError ignored) {
-                int tmp = 0;
-            }
-            haveSerialMonitor = false;
-        }
-
-        // return our implementation
         return ApplicationManager.getApplication().getService(JsscSerialService.class);
     }
 
@@ -98,7 +78,7 @@ public class JsscSerialServiceImpl implements JsscSerialService {
     }
 
     @Override
-    public synchronized void connect(SerialPortProfile settings, Consumer<byte[]> dataListener, SerialConnectionListener connectListener) throws SerialMonitorException {
+    public synchronized SerialPortOwnerAccess connect(SerialPortProfile settings, Consumer<byte[]> dataListener, SerialConnectionListener connectListener) throws SerialMonitorException {
         String portName = settings.getPortName();
         int dataBits = settings.getBits();
         int stopBits;
@@ -132,6 +112,7 @@ public class JsscSerialServiceImpl implements JsscSerialService {
             }
             port.addEventListener(new MySerialPortEventListener(port, dataListener, connectListener), MASK_ERR | MASK_RXCHAR);
             openPorts.put(portName, new SerialConnection(port, connectListener));
+            return new MySerialPortOwnerAccess(this, portName);
         } catch (SerialPortException e) {
             SerialPort port = e.getPort();
             if (port != null &&
@@ -161,18 +142,6 @@ public class JsscSerialServiceImpl implements JsscSerialService {
     }
 
     @Override
-    public void write(@NotNull String portName, byte[] bytes) throws SerialMonitorException {
-        try {
-            SerialConnection connection = openPorts.get(portName);
-            if (connection != null) {
-                connection.mySerialPort.writeBytes(bytes);
-            }
-        } catch (SerialPortException e) {
-            throw new SerialMonitorException(e.getMessage(), e);
-        }
-    }
-
-    @Override
     public void dispose() {
         openPorts.values().forEach(connection -> {
             try {
@@ -181,6 +150,40 @@ public class JsscSerialServiceImpl implements JsscSerialService {
                 Logger.getInstance(JsscSerialServiceImpl.class).debug(e);
             }
         });
+    }
+
+    private static class MySerialPortOwnerAccess implements SerialPortOwnerAccess {
+        private final String myPortName;
+        private final JsscSerialServiceImpl mySerialService;
+
+        private MySerialPortOwnerAccess(JsscSerialServiceImpl serialService, String portName) {
+            myPortName = portName;
+            mySerialService = serialService;
+        }
+
+        @Override
+        public @NotNull String getPortName() {
+            return myPortName;
+        }
+
+        @Override
+        public boolean isConnected() {
+            return mySerialService.isConnected(myPortName);
+        }
+
+        @Override
+        public void write(byte[] bytes) throws SerialMonitorException {
+            try {
+                SerialConnection connection = mySerialService.openPorts.get(myPortName);
+                if (connection != null) {
+                    connection.mySerialPort.writeBytes(bytes);
+                } else {
+                    throw new SerialMonitorException(Bundle.message("serial.port.not.connected", myPortName));
+                }
+            } catch (SerialPortException e) {
+                throw new SerialMonitorException(e.getMessage(), e);
+            }
+        }
     }
 
     private static class MySerialPortEventListener implements SerialPortEventListener {

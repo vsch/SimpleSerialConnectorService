@@ -1,8 +1,8 @@
 plugins {
     id "java"
+    id 'maven-publish'
     id "org.jetbrains.kotlin.jvm" version "1.8.20"
     id "org.jetbrains.intellij" version "1.13.3"
-    id 'maven-publish'
 }
 
 def javaVersion = "11"
@@ -65,7 +65,7 @@ publishing {
             from components.java
         }
     }
-    
+
     repositories {
         mavenLocal {
 
@@ -99,9 +99,9 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(pluginVersion)
-        sinceBuild.set(pluginSinceBuild)
-        untilBuild.set(pluginUntilBuild)
+        version = pluginVersion
+        sinceBuild = pluginSinceBuild
+        untilBuild = pluginUntilBuild
     }
 
     signPlugin {
@@ -114,3 +114,5 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
+
+

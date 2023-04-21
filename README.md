@@ -21,6 +21,13 @@ dependent plugin. This means that for now, using this library may still conflict
 Port Monitor` loading of native libraries. That said, it is still preferable to implement serial
 port connectivity by using this plugin as a dependency, to avoid conflicting with other plugins.
 
+The service in this plugin was too permissive by allowing anyone to write to a connected port by
+using the port name. The interface was changed:
+ 
+* removed `write()` method for writing to port
+* changed `connect()` method to return a `SerialPortOwnerAccess` instance to be used for writing
+  to the connected port. 
+
 ## Adding SimpleSerialConnectorService to your plugin
 
 * Modify the gradle build script to add the github repository for the plugin package, and define
@@ -43,7 +50,7 @@ port connectivity by using this plugin as a dependency, to avoid conflicting wit
 
   ```groovy
   dependencies {
-    compileOnly("com.vladsch.plugins:simple-serial-connector-service:1.0.2")
+    compileOnly("com.vladsch.plugins:simple-serial-connector-service:1.0.4")
   }
   ```
 * Add the plugin to `plugin.xml` as a dependency:

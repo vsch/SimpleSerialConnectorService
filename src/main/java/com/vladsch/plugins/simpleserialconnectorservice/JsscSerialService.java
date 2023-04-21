@@ -52,9 +52,11 @@ public interface JsscSerialService extends Disposable {
      * @param dataListener    received data callback
      * @param connectListener port connection status listener
      *
+     * @return SerialPortOwnerAccess to use for writing to the connected port
+     *
      * @throws SerialMonitorException if there are any issues
      */
-    void connect(SerialPortProfile settings, Consumer<byte[]> dataListener, SerialConnectionListener connectListener) throws SerialMonitorException;
+    SerialPortOwnerAccess connect(SerialPortProfile settings, Consumer<byte[]> dataListener, SerialConnectionListener connectListener) throws SerialMonitorException;
 
     /**
      * Closes the given port connection
@@ -64,16 +66,6 @@ public interface JsscSerialService extends Disposable {
      * @throws SerialMonitorException if there are any issues
      */
     void close(String portName) throws SerialMonitorException;
-
-    /**
-     * Write given byte array to the previously opened port
-     * 
-     * @param portName  name of the port
-     * @param bytes     bytes to write out
-     *              
-     * @throws SerialMonitorException if there are any issues
-     */
-    void write(@NotNull String portName, byte[] bytes) throws SerialMonitorException;
 
     @Override
     void dispose();
