@@ -45,4 +45,24 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.vladsch.plugins.simpleserialconnectorservice.JsscSerialServiceImpl" serviceInterface="com.vladsch.plugins.simpleserialconnectorservice.JsscSerialService"/>
     </extensions>
+
+    <change-notes><![CDATA[
+        <h2>1.0.4</h2>
+        <ul>
+            <li>Add: <code>SerialPortOwnerAccess</code> interface to provide <code>write()</code> method to connected port.</li>
+            <li>Remove: <code>JsscSerialServiceDelegate</code>. Not used and was causing plugin verification seizures.</li>
+            <li>Remove: <code>write()</code> method on <code>JsscSerialService</code>, use instance of
+                <code>SerialPortOwnerAccess.write()</code> method instead.
+            </li>
+        </ul>
+        <h2>1.0.2</h2>
+        <ul>
+            <li>Fix: <code>plugin.xml</code> plugin name to <code>SimpleSerialConnectorService</code></li>
+        </ul>
+        <h2>1.0.0</h2>
+        <ul>
+            <li>Initial release</li>
+        </ul>
+        ]]>
+    </change-notes>
 </idea-plugin>
