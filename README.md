@@ -59,7 +59,14 @@ using the port name. The interface was changed:
   <depends>com.vladsch.plugins.SimpleSerialConnectorService</depends>
   ```
 
+In your plugin get the instance of the service via `JsscSerialService.getInstance()` and use its
+methods to get a list of available ports, connect to a specific port, test port name validity,
+test whether a port is connected, close port, etc. see:
+[JsscSerialService.java](src/main/java/com/vladsch/plugins/simpleserialconnectorservice/JsscSerialService.java)
+
 ## Notes
+
+[Plugin Page] on JetBrains Marketplace
 
 The plugin uses [jscc - Java Simple Serial Connector], Licensed under [GNU Lesser GPL 3]
 
@@ -68,4 +75,5 @@ The plugin uses [jscc - Java Simple Serial Connector], Licensed under [GNU Lesse
 [GNU Lesser GPL 3]: http://www.gnu.org/licenses/lgpl.html
 [Issues]: https://github.com/vsch/SimpleSerialConnectorService/issues
 [Plugin Source]: https://github.com/vsch/SimpleSerialConnectorService
+[Plugin Page]: https://plugins.jetbrains.com/plugin/21550-simpleserialconnectorservice
 
