@@ -1,14 +1,23 @@
+/*
+import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.ChangelogSectionUrlBuilder
+import org.jetbrains.changelog.ExtensionsKt
+*/
+
 plugins {
     id "java"
     id 'maven-publish'
     id "org.jetbrains.kotlin.jvm" version "1.8.20"
     id "org.jetbrains.intellij" version "1.13.3"
+//    id "org.jetbrains.changelog" version "2.0.0"
 }
 
-def javaVersion = "11"
+//apply plugin: "org.jetbrains.changelog"
+
 def pluginVersion = "1.0.4"
 def pluginSinceBuild = "203.5981.155"
 def pluginUntilBuild = ""
+def javaVersion = "11"
 
 group = "com.vladsch.plugins"
 version = pluginVersion
@@ -81,6 +90,24 @@ publishing {
     }
 }
 
+/*
+changelog {
+    version = pluginVersion
+    path = file("CHANGELOG.md").canonicalPath
+    header = "[${-> version.get()}] - ${ExtensionsKt.date("yyyy-MM-dd")}"
+    headerParserRegex = ~/(\d+\.\d+)/
+    introduction = """
+    """.stripIndent()
+    itemPrefix = "*"
+    keepUnreleasedSection = true
+    unreleasedTerm = "[Unreleased]"
+    groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
+    lineSeparator = "\n"
+    combinePreReleases = true
+    sectionUrlBuilder = { repositoryUrl, currentVersion, previousVersion, isUnreleased -> "foo" } as ChangelogSectionUrlBuilder
+}
+*/
+
 tasks {
     instrumentCode {
         enabled = false
@@ -102,6 +129,18 @@ tasks {
         version = pluginVersion
         sinceBuild = pluginSinceBuild
         untilBuild = pluginUntilBuild
+
+/*
+        changeNotes = provider {
+            "<![CDATA[" + changelog.renderItem(
+                    changelog
+                            .getUnreleased()
+                            .withHeader(false)
+                            .withEmptySections(false),
+                    Changelog.OutputType.HTML
+            ) + "]]>"
+        }
+*/
     }
 
     signPlugin {
@@ -114,5 +153,3 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
-
-
