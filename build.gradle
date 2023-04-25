@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 /*
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.ChangelogSectionUrlBuilder
@@ -6,25 +7,26 @@ import org.jetbrains.changelog.ExtensionsKt
 
 plugins {
     id "java"
-    id 'maven-publish'
     id "org.jetbrains.kotlin.jvm" version "1.8.20"
     id "org.jetbrains.intellij" version "1.13.3"
 //    id "org.jetbrains.changelog" version "2.0.0"
+    id 'maven-publish'
+    id "signing"
 }
 
 //apply plugin: "org.jetbrains.changelog"
 
-def pluginVersion = "1.0.4"
-def pluginSinceBuild = "203.5981.155"
-def pluginUntilBuild = ""
-def javaVersion = "11"
+def javaVersion = properties["javaVersion"] ?: "11"
+def projectVersion = properties["projectVersion"] ?: "1.0.SNAPSHOT"
+def projectArtifactId = properties["projectArtifactId"] ?: ""
+def projectGroup = properties["projectGroup"] ?: "com.vladsch.${projectArtifactId}"
 
-group = "com.vladsch.plugins"
-version = pluginVersion
+group = projectGroup
+version = projectVersion
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
 }
 
 // Configure Gradle IntelliJ Plugin
@@ -32,21 +34,19 @@ repositories {
 intellij {
     version = "2020.3"
     type = "CL" // Target IDE Platform
-    downloadSources = true
-
     plugins = []
+    downloadSources = true
 }
 
 dependencies {
-    annotationProcessor "junit:junit:4.13.2"
     testImplementation "junit:junit:4.13.2"
 
-    implementation "org.jetbrains:annotations:24.0.1"
+    compileOnly "org.jetbrains:annotations:24.0.1"
     implementation("io.github.java-native:jssc:2.9.4") {
         exclude(group: "org.slf4j", module: "slf4j-api")
     }
 
-    compileOnly(files("lib/serial-monitor.jar"))
+//    compileOnly(files("lib/serial-monitor.jar"))
 }
 
 // Set the JVM compatibility versions
@@ -59,25 +59,46 @@ compileKotlin {
     kotlinOptions.jvmTarget = javaVersion
 }
 
+/*
 java {
-    withSourcesJar()
     withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = "com.vladsch.plugins"
-            artifactId = "simple-serial-connector-service"
-            version = pluginVersion
+            groupId = projectGroup
+            artifactId = projectArtifactId
+            version = projectVersion
 
             from components.java
+            
+            pom {
+                name = "${projectArtifactId}-lib"
+                description = "Wrapper of jssc library as a service for use in Kotlin/Java JetBrains plugin projects"
+
+                withXml {
+                    asNode()
+                            .appendNode('parent')
+                            .with {
+                                appendNode "groupId", projectGroup
+                                appendNode "artifactId", projectArtifactId
+                                appendNode "version", projectVersion
+                            }
+                }
+            }
         }
     }
 
     repositories {
-        mavenLocal {
-
+        maven {
+            name = "OSSRH"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
         }
         maven {
             name = "GitHubPackages"
@@ -89,10 +110,11 @@ publishing {
         }
     }
 }
+*/
 
 /*
 changelog {
-    version = pluginVersion
+    version = projectVersion
     path = file("CHANGELOG.md").canonicalPath
     header = "[${-> version.get()}] - ${ExtensionsKt.date("yyyy-MM-dd")}"
     headerParserRegex = ~/(\d+\.\d+)/
@@ -109,26 +131,19 @@ changelog {
 */
 
 tasks {
-    instrumentCode {
-        enabled = false
-    }
-
-    setupInstrumentCode {
-        enabled = false
-    }
-
-    buildSearchableOptions {
-        enabled = false
-    }
-
-    runIde {
-        enabled = false
-    }
+    instrumentCode.enabled = false
+    setupInstrumentCode.enabled = false
+    instrumentCode.enabled = false
+    instrumentedJar.enabled = false
+    prepareSandbox.enabled = false
+    buildSearchableOptions.enabled = false
+    jarSearchableOptions.enabled = false
+    runIde.enabled = false
 
     patchPluginXml {
-        version = pluginVersion
-        sinceBuild = pluginSinceBuild
-        untilBuild = pluginUntilBuild
+        version = projectVersion
+        sinceBuild = projectSinceBuild
+        untilBuild = projectUntilBuild
 
 /*
         changeNotes = provider {
@@ -144,12 +159,12 @@ tasks {
     }
 
     signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+        certificateChainFile = file(System.getenv("CERTIFICATE_CHAIN"))
+        privateKeyFile = file(System.getenv("PRIVATE_KEY"))
+        password = System.getenv("PRIVATE_KEY_PASSWORD")
     }
 
     publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+        token = System.getenv("PUBLISH_TOKEN")
     }
 }
